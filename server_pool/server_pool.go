@@ -49,7 +49,7 @@ func filterBack(list []*backend.Backend, backend *backend.Backend) (index int) {
 }
 
 func (s *ServerPool) GetNextPeer() *backend.Backend {
-	next := s.NextIndex()
+	next := s.nextIndex()
 	l := len(s.BackendsAlive) + next
 	for i := next; i < l; i++ {
 		idx := i % len(s.BackendsAlive)
@@ -61,6 +61,6 @@ func (s *ServerPool) GetNextPeer() *backend.Backend {
 	return nil
 }
 
-func (s *ServerPool) NextIndex() int {
+func (s *ServerPool) nextIndex() int {
 	return (s.Current + 1) % len(s.BackendsAlive)
 }

@@ -23,7 +23,7 @@ func main() {
 
 	urls := strings.Split(serverList, ",")
 
-	lb := loadbalancer.LB{SP: serverPool}
+	lb := loadbalancer.LoadBalancer{SP: serverPool}
 
 	lb.AddBackends(urls)
 

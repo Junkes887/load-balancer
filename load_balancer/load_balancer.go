@@ -10,11 +10,11 @@ import (
 	serverpool "github.com/Junkes887/load-balancer/server_pool"
 )
 
-type LB struct {
+type LoadBalancer struct {
 	SP *serverpool.ServerPool
 }
 
-func (lb LB) Proxy(w http.ResponseWriter, r *http.Request) {
+func (lb LoadBalancer) Proxy(w http.ResponseWriter, r *http.Request) {
 	peer := lb.SP.GetNextPeer()
 	if peer != nil {
 		peer.ReverseProxy.ServeHTTP(w, r)
@@ -23,7 +23,7 @@ func (lb LB) Proxy(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, "Service not available", http.StatusServiceUnavailable)
 }
 
-func (lb LB) AddBackends(urls []string) {
+func (lb LoadBalancer) AddBackends(urls []string) {
 	for _, u := range urls {
 		serverUrl, err := url.Parse(u)
 		if err != nil {
@@ -45,7 +45,7 @@ func (lb LB) AddBackends(urls []string) {
 	}
 }
 
-func (lb LB) dontAlive(backendUrl *url.URL) {
+func (lb LoadBalancer) dontAlive(backendUrl *url.URL) {
 	for _, b := range lb.SP.BackendsAlive {
 		if b.URL.String() == backendUrl.String() {
 			lb.SP.AddBackendDontAlive(b)
