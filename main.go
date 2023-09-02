@@ -14,11 +14,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const (
-	Attempts int = iota
-	retries      = 0
-)
-
 func main() {
 	godotenv.Load()
 	serverPool := &serverpool.ServerPool{}
